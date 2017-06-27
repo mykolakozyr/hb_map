@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui' />
+    <title></title>
+    <script src='lib/leaflet/leaflet-src.js'></script>
+    <script src='lib/leaflet/leaflet.js'></script>
+    <script src="lib/leaflet/leaflet-side-by-side.js"></script>
+    <link href='lib/leaflet/leaflet.css' rel='stylesheet' />
+    <link href="lib/jquery-ui.min.css" rel="stylesheet" type="text/css"/> 
+    <script src='lib/jquery.min.js'></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="data/shpola_points.geojson"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .info {
+            padding: 6px 8px; 
+            font: 14px/16px Arial, Helvetica, sans-serif; 
+            background: white; background: rgba(255,255,255,0.8); 
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px;
+        } 
+        .info h4 { 
+            margin: 0 0 5px; 
+            color: #777; 
+        }       
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+
+    <script>
+        //general map state options
+        var map = L.map('map')
+        var southWest = L.latLng(40.00, 20.00),
+        northEast = L.latLng(55.00, 43.00),
+        bounds = L.latLngBounds(southWest, northEast);
+
+        map.setView([49.004, 31.39],13);
+        map.setMaxBounds(bounds);
+        map.setMinZoom(12);
+
+        // add basemap
+        L.tileLayer('https://api.mapbox.com/styles/v1/mykola-kozyr/cj4faj7xh354i2rpdqvspxkmy/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibXlrb2xhLWtvenlyIiwiYSI6ImNpemNzeHBhaDAwNHkycW8wZm40OHptdTMifQ.6q-bTx4fwm9Ch-knzk1i3Q', {
+            maxZoom: 18,
+            attribution: '<a href="https://www.facebook.com/geolabknu">НДС "Регіональних проблем економіки і політики"</a> | ' + 
+                    '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors | ' +
+                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'mapbox.streets'
+        }).addTo(map);
+
+
+        function highlightFeature(e) {
+            var layer = e.target;
+
+            layer.setStyle({
+                radius: 8,
+                fillColor: "red",
+                color: "red",
+                weight: 1,
+                opacity: 0.6,
+                fillOpacity: 0.7 ,
+            });
+
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                layer.bringToFront();
+            }
+
+            info.update(layer.feature.properties);
+        }
+
+        var shpolaLayer;
+
+        function resetHighlight(e) {
+            shpolaLayer.resetStyle(e.target);
+            info.update();
+        }
+
+        function zoomToFeature(e) {
+            map.fitBounds(e.target.getBounds());
+        }
+
+        function pointStyle(feature){
+            return {
+                    radius: 5,
+                    fillColor: "red",
+                    color: "red",
+                    weight: 1,
+                    opacity: 0.4,
+                    fillOpacity: 0.7   
+            }
+        };
+
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature
+            });
+        }        
+
+        shpolaLayer = L.geoJson(shpola, {
+            style: pointStyle,
+            pointToLayer: function (feature, latlng) {
+                var circle =  L.circleMarker(latlng,pointStyle);
+                return circle;
+            },
+            onEachFeature: onEachFeature,
+        }).addTo(map);
+
+    // control that shows amalgamated community info on hover
+        var info = L.control();
+
+        info.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+
+        info.update = function (props) {
+            this._div.innerHTML = '<h4>Цитата дня</h4>' +  (props ?
+                '<b>' + props.name + '</b>' : 'Наведіть на обрану точку');
+        };
+
+        info.addTo(map);
+
+        // switching on and off OTGlayer
+        var overlay = {
+            "Цитати дня": shpolaLayer
+        };
+        layerControl = L.control.layers(null, overlay, {position: 'topleft'});
+        layerControl.addTo(map);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+﻿var shpola = {
+"type": "FeatureCollection",
+"name": "shpola_points",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Зі Шполою в серці" }, "geometry": { "type": "Point", "coordinates": [ 31.396265215194116, 49.012571934919336 ] } },
+{ "type": "Feature", "properties": { "name": "Just Shpol It [А. Садовий]" }, "geometry": { "type": "Point", "coordinates": [ 31.395856223539294, 49.01186184326896 ] } },
+{ "type": "Feature", "properties": { "name": "Краще в Києві загубити, ніж в Шполі знайти" }, "geometry": { "type": "Point", "coordinates": [ 31.404781864947463, 49.017810520313148 ] } },
+{ "type": "Feature", "properties": { "name": "Всюди погано, а у Шполі гірше [Анонім]" }, "geometry": { "type": "Point", "coordinates": [ 31.403410539987181, 49.013392472656982 ] } },
+{ "type": "Feature", "properties": { "name": "Вовків боятися - до Шполи не їздити [Народна мудрість]" }, "geometry": { "type": "Point", "coordinates": [ 31.404156348298912, 49.017526514757257 ] } },
+{ "type": "Feature", "properties": { "name": "І все-таки ядра існують [Галілей]" }, "geometry": { "type": "Point", "coordinates": [ 31.392331677808027, 49.010473190327922 ] } },
+{ "type": "Feature", "properties": { "name": "Знаю, що Шполу не знаю, але інші не знають і того [Сократ]" }, "geometry": { "type": "Point", "coordinates": [ 31.395531436048696, 49.015333306169111 ] } },
+{ "type": "Feature", "properties": { "name": "Не Шпола красить людину, а людина - Шполу [Невідомий маляр]" }, "geometry": { "type": "Point", "coordinates": [ 31.400030344251743, 49.015885562038562 ] } },
+{ "type": "Feature", "properties": { "name": "Шпола - це доля [Наполеон І]" }, "geometry": { "type": "Point", "coordinates": [ 31.3943826506653, 49.01304926861399 ] } }
+]
+}
